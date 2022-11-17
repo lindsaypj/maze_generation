@@ -1,0 +1,15 @@
+#main-panel {
+    -fx-spacing: 10px;
+    -fx-padding: 10px;
+    -fx-alignment: CENTER;
+}
+
+#controls-region {
+    -fx-spacing: 10px;
+    -fx-alignment: CENTER;
+}
+
+#grid-dimensions-display {
+    -fx-alignment: CENTER;
+    -fx-pref-columns: 9;
+}
