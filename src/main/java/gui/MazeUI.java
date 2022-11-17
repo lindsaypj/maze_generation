@@ -50,7 +50,7 @@ public abstract class MazeUI extends Application
     private Button solveDFS;
     private Button solveBFS;
 
-    //size of them maze
+    // Size of them maze
     private double cellWidth, cellHeight;
     private int rows, cols;
 
