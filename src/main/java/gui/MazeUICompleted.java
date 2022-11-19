@@ -130,10 +130,14 @@ public class MazeUICompleted extends MazeUI
         }
     }
 
+    // Method to solve the maze using Depth First Search and
+    // highlight the path from start to finish
     private void dfs() {
 
     }
 
+    // Method to solve the maze using Breadth First Search and
+    // highlight the path from start to finish
     private void bfs() {
 
     }

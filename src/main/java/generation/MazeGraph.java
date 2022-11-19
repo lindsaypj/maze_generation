@@ -56,8 +56,8 @@ public class MazeGraph {
     }
 
     /**
-     * Getter method for the vertices in the graph
-     * @return set of cells that make up the graph
+     * Getter method for the vertices in the graph. Returns a map of the
+     * @return Map of cell indices to Cell containers storing the walls to draw
      */
     public Map<Integer, Cell> cellMap() {
         Map<Integer, Cell> cells = new HashMap<>();
