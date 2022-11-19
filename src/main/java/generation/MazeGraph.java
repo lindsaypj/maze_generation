@@ -33,19 +33,15 @@ public class MazeGraph {
      * two adjacent cells in the maze
      * @param first an index representing a cell in the maze
      * @param second another index representing a cell in the maze other than first
-     * @return true if the edge was added, otherwise false
      */
-    public boolean addEdge(int first, int second) {
+    public void addEdge(int first, int second) {
         // Edges are a set (No duplicates)
         if (containsEdge(first, second)) {
-            return false;
+            return;
         }
-
         addDirectedEdge(first, second);
         addDirectedEdge(second, first);
         edgeCount++;
-
-        return true;
     }
 
     private void addDirectedEdge(int first, int second) {
@@ -57,6 +53,45 @@ public class MazeGraph {
             // Put new node at the start of the LinkedList
             adjacencyLists.put(first, new Node(second, oldHead));
         }
+    }
+
+    /**
+     * Getter method for the vertices in the graph
+     * @return set of cells that make up the graph
+     */
+    public Map<Integer, Cell> cellMap() {
+        Map<Integer, Cell> cells = new HashMap<>();
+
+        // Look at all vertices
+        for (int key : adjacencyLists.keySet()) {
+            // Add at each edge in the linked list
+            Node current = adjacencyLists.get(key);
+
+            Cell newCell = new Cell();
+            while (current != null) {
+                int wallReference = key - current.vertex;
+                if (wallReference < 0) {
+                    if (wallReference == -1) {
+                        newCell.setDoor(Cell.EAST); // West
+                    }
+                    else {
+                        newCell.setDoor(Cell.SOUTH); // South
+                    }
+                }
+                else {
+                    if (wallReference == 1) {
+                        newCell.setDoor(Cell.WEST); // East
+                    }
+                    else {
+                        newCell.setDoor(Cell.NORTH); // North
+                    }
+                }
+                current = current.next;
+            }
+            // Track key as added
+            cells.put(key, newCell);
+        }
+        return cells;
     }
 
     private boolean containsVertex(int search) {
@@ -89,7 +124,7 @@ public class MazeGraph {
     }
 
     // Inner Classes
-    private class Node {
+    private static class Node {
         // Data in node
         private int vertex;
 
