@@ -6,7 +6,6 @@ import generation.DisjointSets;
 import generation.MazeGraph;
 import javafx.scene.paint.Color;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -50,25 +49,83 @@ public class MazeUICompleted extends MazeUI
         DisjointSets sets = new DisjointSets(cellCount);
         graph = new MazeGraph(cellCount);
 
+        // Create list of cells to choose from
+        int[] generatedCells = new int[cellCount];
+        for (int i = 0; i < cellCount; i++) {
+            generatedCells[i] = i;
+        }
+
         // Add edges to the graph randomly to form maze
+        // FISHER-YATES Algorithm: www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm
         Random random = ThreadLocalRandom.current(); // Faster than Random (not thread-safe)
         while(graph.getEdgeCount() < cellCount -1) {
-            // Select a random cell
-            int nextCell = random.nextInt(cellCount);
+            // Traverse Backwards through generatedCells
+            for (int i = cellCount; i > 0; i--) {
+                // Select a random cell from the unused cells in generatedCells
+                int nextCellIndex = random.nextInt(i);
+                int nextCell = generatedCells[nextCellIndex];
+                swap(nextCellIndex, i-1, generatedCells); // Place selected cell at the end
 
-            // Get random neighbor (cycle through them
-            int neighbor = getNeighbor(nextCell, random.nextInt(4));
+                // Get random neighbor (cycle through them
+                int neighbor;
+                int[] neighbors = randomNeighbors(random);
 
-            // Check if neighbor index is valid and if they are in the same set
-            if (neighbor != -1 && !sets.sameSet(nextCell, neighbor)) {
-                // Union the sets
-                sets.union(nextCell, neighbor);
-                // Store the edge in the graph
-                graph.addEdge(nextCell, neighbor);
+                for (int counter = 0; counter < 4; counter++) {
+                    neighbor = getNeighbor(nextCell, neighbors[counter]);
+                    // Check if neighbor index is valid and if they are in the same set
+                    if (neighbor != -1 && !sets.sameSet(nextCell, neighbor)) {
+                        // Union the sets
+                        sets.union(nextCell, neighbor);
+                        // Store the edge in the graph
+                        graph.addEdge(nextCell, neighbor);
+                        break;
+                    }
+                }
+                // Exit loop early if the number of edges was found
+                if (graph.getEdgeCount() == cellCount -1) {
+                    break;
+                }
             }
         }
         // Draw the maze
         drawMaze();
+    }
+
+    // Method to randomize the neighbor selection order
+    private int[] randomNeighbors(Random random) {
+        int[] neighbors = {0,1,2,3};
+        for (int i = 4; i > 0; i--) {
+            swap(i-1, random.nextInt(i), neighbors);
+        }
+        return neighbors;
+    }
+
+    // Method to calculate the neighbor of the cell in a given direction
+    // Returns -1 if neighbor is invalid or out of bounds
+    private int getNeighbor(int cell, int wall) {
+        switch(wall) {
+            case 0: // NORTH
+                int northNeighbor = cell - getCols();
+                return northNeighbor < 0 ? -1 : northNeighbor;
+            case 1: // EAST
+                // If (cell + 1) % getCols() == 0, then cell is at the end of a row
+                return (cell + 1) % getCols() == 0 ? -1 : cell + 1;
+            case 2: // SOUTH
+                int southNeighbor = cell + getCols();
+                return southNeighbor >= cellCount ? -1 : southNeighbor;
+            case 3: // WEST
+                // If cell % getCols() == 0, then cell is at the start of a row
+                return cell % getCols() == 0 ? -1 : cell - 1;
+            default:
+                return -1;
+        }
+    }
+
+    // Method to swap values at provided array indices
+    private void swap(int firstIndex, int secondIndex, int[] array) {
+        int firstValue = array[firstIndex];
+        array[firstIndex] = array[secondIndex];
+        array[secondIndex] = firstValue;
     }
 
     private void drawMaze() {
@@ -110,32 +167,10 @@ public class MazeUICompleted extends MazeUI
         }
     }
 
-    // Method to calculate the neighbor of the cell in a given direction
-    // Returns -1 if neighbor is invalid or out of bounds
-    private int getNeighbor(int cell, int wall) {
-        switch(wall) {
-            case 0: // NORTH
-                int northNeighbor = cell - getCols();
-                return northNeighbor < 0 ? -1 : northNeighbor;
-            case 1: // EAST
-                // If (cell + 1) % getCols() == 0, then cell is at the end of a row
-                return (cell + 1) % getCols() == 0 ? -1 : cell + 1;
-            case 2: // SOUTH
-                int southNeighbor = cell + getCols();
-                return southNeighbor >= cellCount ? -1 : southNeighbor;
-            case 3: // WEST
-                // If cell % getCols() == 0, then cell is at the start of a row
-                return cell % getCols() == 0 ? -1 : cell - 1;
-            default:
-                return -1;
-        }
-    }
-
     // Method to solve the maze using Depth First Search and
     // highlight the path from start to finish
     private void dfs() {
         setFillColor(Color.YELLOW);
-//        List<Integer> traversal = graph.dfs();
         for (int cell : graph.dfs()) {
             fillCell(cell);
         }
