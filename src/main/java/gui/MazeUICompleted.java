@@ -20,6 +20,9 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MazeUICompleted extends MazeUI
 {
+    //Constants
+    public static final int MAX_CELL_COUNT_FOR_GRID = 10000;
+
     // Maze Data
     private int cellCount;
     private MazeGraph graph;
@@ -130,6 +133,10 @@ public class MazeUICompleted extends MazeUI
 
     private void drawMaze() {
         clearScreen();
+        if (cellCount < MAX_CELL_COUNT_FOR_GRID) {
+            setStrokeWidth(100 / getCols() + 1);
+            drawBackgroundGrid();
+        }
         setStrokeColor(Color.BLACK);
         // Draw border to match cell wall widths
         drawBorder();
