@@ -1,7 +1,6 @@
 package generation;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class creates a graph structure to map the cells in a maze
@@ -121,6 +120,56 @@ public class MazeGraph {
      */
     public int getEdgeCount() {
         return edgeCount;
+    }
+
+    /**
+     * Search Algorithm to traverse the maze and find the path from
+     * start to finish and return the cell traversal as a list.
+     * @return a list of cell indices from 0 to cellCount - 1
+     */
+    public List<Integer> dfs() {
+        // Verify that graph has the correct number of edges
+        if (edgeCount < adjacencyLists.size() - 1) {
+            return new ArrayList<>();
+        }
+
+        // Create tracker variables
+        List<Integer> traversal = new ArrayList<>();
+        Set<Integer> visited = new HashSet<>();
+
+        // Recursive DFS call
+        dfsTraversal(0, adjacencyLists.size()-1, traversal, visited);
+
+        return traversal;
+    }
+
+    // Private method to traverse the cells in the maze using
+    // Depth First Search, storing the traversal path as a list
+    private boolean dfsTraversal(int current, int target, List<Integer> traversal, Set<Integer> visited) {
+        // Base Case (Target Found)
+        if (current == target) {
+            traversal.add(current);
+            return true;
+        }
+
+        // Ignore already visited cells
+        if (!visited.contains(current)) {
+            // Store current cell as visited (Not traversed)
+            visited.add(current);
+
+            // Visit adjacent neighbors
+            Node neighbor = adjacencyLists.get(current);
+            while(neighbor != null) {
+                // Visit this neighbor, stop looking if found
+                if (dfsTraversal(neighbor.vertex, target, traversal, visited)) {
+                    traversal.add(current);
+                    return true;
+                }
+                // Move to next neighbor
+                neighbor = neighbor.next;
+            }
+        }
+        return false;
     }
 
     // Inner Classes

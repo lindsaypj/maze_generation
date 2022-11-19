@@ -6,6 +6,7 @@ import generation.DisjointSets;
 import generation.MazeGraph;
 import javafx.scene.paint.Color;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -133,7 +134,11 @@ public class MazeUICompleted extends MazeUI
     // Method to solve the maze using Depth First Search and
     // highlight the path from start to finish
     private void dfs() {
-
+        setFillColor(Color.YELLOW);
+//        List<Integer> traversal = graph.dfs();
+        for (int cell : graph.dfs()) {
+            fillCell(cell);
+        }
     }
 
     // Method to solve the maze using Breadth First Search and
