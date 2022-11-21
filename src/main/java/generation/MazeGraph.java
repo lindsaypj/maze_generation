@@ -13,6 +13,11 @@ import java.util.*;
  * @version 1.0
  */
 public class MazeGraph {
+    // Constants
+    private static final int SOURCE = 0;
+    private static final int MAX_RECURSIVE_SEARCH = 700; // Used to avoid stackoverflow
+
+    // Fields
     private Map<Integer, Node> adjacencyLists = new HashMap<>();
     private int edgeCount = 0;
 
@@ -137,15 +142,23 @@ public class MazeGraph {
         List<Integer> traversal = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
 
-        // Recursive DFS call
-        dfsTraversal(0, adjacencyLists.size()-1, traversal, visited);
-
+        if (adjacencyLists.size() <= MAX_RECURSIVE_SEARCH) {
+            // Recursive DFS call
+            dfsRecursive(0, adjacencyLists.size() - 1, traversal, visited);
+        }
+        else {
+            // Iterative DFS call
+            Stack<Integer> traversal2 = dfsIterative(adjacencyLists.size() - 1, visited);
+            while (!traversal2.isEmpty()) {
+                traversal.add(traversal2.pop());
+            }
+        }
         return traversal;
     }
 
     // Private method to traverse the cells in the maze using
     // Depth First Search, storing the traversal path as a list
-    private boolean dfsTraversal(int current, int target, List<Integer> traversal, Set<Integer> visited) {
+    private boolean dfsRecursive(int current, int target, List<Integer> traversal, Set<Integer> visited) {
         // Base Case (Target Found)
         if (current == target) {
             traversal.add(current);
@@ -160,8 +173,8 @@ public class MazeGraph {
             // Visit adjacent neighbors
             Node neighbor = adjacencyLists.get(current);
             while(neighbor != null) {
-                // Visit this neighbor, stop looking if found
-                if (dfsTraversal(neighbor.vertex, target, traversal, visited)) {
+                // Visit this neighbor, stop looking if target found
+                if (dfsRecursive(neighbor.vertex, target, traversal, visited)) {
                     traversal.add(current);
                     return true;
                 }
@@ -170,6 +183,43 @@ public class MazeGraph {
             }
         }
         return false;
+    }
+
+    // Private method to traverse the cells in the maze using
+    // Depth First Search, storing the traversal path as a list
+    // *Prevents StackOverflow* (non-recursive)
+    private Stack<Integer> dfsIterative(int target, Set<Integer> visited) {
+        Stack<Integer> traversal = new Stack<>();
+        int currentCell = SOURCE;
+
+        // Repeats for each Vertex in traversal
+        while(currentCell != target) {
+            // If this is the first visit to the cell, add to visited set
+            if (!visited.contains(currentCell)) {
+                visited.add(currentCell);
+                traversal.add(currentCell);
+            }
+
+            // Traverse neighbors
+            Node neighborList = adjacencyLists.get(currentCell);
+            while (neighborList != null ) {
+                // Find first non-visited neighbor
+                if (!visited.contains(neighborList.vertex)) {
+                    currentCell = neighborList.vertex;
+                    break;
+                }
+                neighborList = neighborList.next;
+            }
+
+            // Check if neighbor was not found (DEAD END FOUND)
+            if (neighborList == null) {
+                // Step back in traversal
+                traversal.pop();
+                currentCell = traversal.peek();
+            }
+        }
+        traversal.add(currentCell);
+        return traversal;
     }
 
     // Inner Classes
