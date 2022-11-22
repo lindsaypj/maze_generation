@@ -186,7 +186,17 @@ public class MazeUICompleted extends MazeUI
     // Method to solve the maze using Breadth First Search and
     // highlight the path from start to finish
     private void bfs() {
+        setFillColor(Color.YELLOW);
 
+        Map<Integer, Integer> traversalMap = graph.bfs();
+
+        Integer current = cellCount - 1;
+        while (current != null) {
+            // Draw current
+            fillCell(current);
+            // Travel to next cell
+            current = traversalMap.get(current);
+        }
     }
 
     @Override

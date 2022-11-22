@@ -137,11 +137,11 @@ public class MazeGraph {
         if (edgeCount < adjacencyLists.size() - 1) {
             return new ArrayList<>();
         }
-
         // Create tracker variables
         List<Integer> traversal = new ArrayList<>();
         Set<Integer> visited = new HashSet<>();
 
+        // Solve Using DFS (choose version and avoid stackoverflow)
         if (adjacencyLists.size() <= MAX_RECURSIVE_SEARCH) {
             // Recursive DFS call
             dfsRecursive(0, adjacencyLists.size() - 1, traversal, visited);
@@ -220,6 +220,60 @@ public class MazeGraph {
         }
         traversal.add(currentCell);
         return traversal;
+    }
+
+    /**
+     * Method to solve the maze using Breadth-First Search
+     * @return a list of vertices to traverse to get through the maze
+     */
+    public Map<Integer, Integer> bfs() {
+        // Verify that graph has the correct number of edges
+        if (edgeCount < adjacencyLists.size() - 1) {
+            return new HashMap<>();
+        }
+        // Get traversal
+        return bsfIterative(adjacencyLists.size() - 1);
+    }
+
+    // Iterative approach to bfs (Prevents stackoverflow)
+    private Map<Integer, Integer> bsfIterative(int target) {
+        // BSF Queue
+        Queue<Integer> bfsQueue = new ArrayDeque<>();
+        Set<Integer> visited = new HashSet<>();
+        Map<Integer, Integer> traversalMap = new HashMap<>();
+
+        // Traverse the queue
+        bfsQueue.add(SOURCE);
+        // Look at a cell in the maze
+        while(!bfsQueue.isEmpty()) {
+            int current = bfsQueue.poll();
+            // If current is visited, skip to next in queue
+            if (visited.contains(current)) {
+                continue;
+            }
+            // add current to visited
+            visited.add(current);
+
+            // Check each non-visited neighbor and add to queue
+            Node neighbors = adjacencyLists.get(current);
+            while (neighbors != null) {
+                // Check for target
+                if (neighbors.vertex == target) {
+                    traversalMap.put(neighbors.vertex, current);
+                    break;
+                }
+                // Check if cell has been visited
+                if (!visited.contains(neighbors.vertex)) {
+                    // Add new cells to queue and map their paths
+                    traversalMap.put(neighbors.vertex, current);
+                    bfsQueue.add(neighbors.vertex);
+                }
+                // Get next neighbor
+                neighbors = neighbors.next;
+            }
+        }
+        // Target found - return map to construct traversal
+        return traversalMap;
     }
 
     // Inner Classes
