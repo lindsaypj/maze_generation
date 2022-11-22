@@ -22,7 +22,8 @@ connected. The connection/edge is also stored in the graph using an adjacency li
 This process repeats until the maze has joined all cells in one [spanning tree](https://en.wikipedia.org/wiki/Spanning_tree). 
 This means there is only path from the entrance to the exit. 
 
-mazes_5.png 
+![Union of two cells](https://plindsay.greenriverdev.com/portfolio/images/maze/mazes_4.png)
+![Union of many cells](https://plindsay.greenriverdev.com/portfolio/images/maze/mazes_5.png)
 
 ## Solving
 
