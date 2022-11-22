@@ -22,6 +22,8 @@ connected. The connection/edge is also stored in the graph using an adjacency li
 This process repeats until the maze has joined all cells in one [spanning tree](https://en.wikipedia.org/wiki/Spanning_tree). 
 This means there is only path from the entrance to the exit. 
 
+mazes_5.png 
+
 ## Solving
 
 Depth-First Search. There are two implementations of DFS in this program because
