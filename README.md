@@ -9,8 +9,9 @@ the resulting path is displayed in the bottom right.
 
 ## Generation
 The maze starts as an integer array of disjoint sets and as a graph of vertices 
-representing each cell in the maze. The disjoint sets are managed using a weighted 
-quick-union (Union-Find) algorithm, with path compression. This allows connections 
+representing each cell in the maze. The disjoint sets are managed using a [weighted 
+quick-union](https://medium.com/@dhaneshchaudhary99/union-find-by-rank-and-path-compression-5f461a5b9839)
+(Union-Find) algorithm, with path compression. This allows connections 
 between large maze sections to be made in near constant time.
 
 The cells in the maze are randomly selected using a [Fiser-Yates](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
