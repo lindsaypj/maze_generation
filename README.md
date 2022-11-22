@@ -19,7 +19,7 @@ algorithm (loops over all cells, in random order). Each cell selects a random ne
 cell, and a union is made in the disjoint sets array if they are not already 
 connected. The connection/edge is also stored in the graph using an adjacency list.
 
-This process repeats until the maze has joined all cells in one spanning tree. 
+This process repeats until the maze has joined all cells in one [spanning tree](https://en.wikipedia.org/wiki/Spanning_tree). 
 This means there is only path from the entrance to the exit. 
 
 ## Solving
