@@ -9,7 +9,7 @@ the resulting path is displayed in the bottom right.
 
 # Generation
 The maze starts as an integer array of disjoint sets and as a graph of vertices 
-representing each cell in the maze. The disjoint sets aremanaged using a weighted 
+representing each cell in the maze. The disjoint sets are managed using a weighted 
 quick-union (Union-Find) algorithm, with path compression. This allowsconnections 
 between large maze sections to be made in near constant time.
 
