@@ -7,6 +7,8 @@ You can solve the maze using either [Depth-First Search](https://en.wikipedia.or
 [Breadth-First Search](https://en.wikipedia.org/wiki/Breadth-first_search) (BFS). The time it takes to solve and render
 the resulting path is displayed in the bottom right.
 
+![Solved Maze](https://plindsay.greenriverdev.com/portfolio/images/maze/300x300-solved.png)
+
 ## Generation
 The maze starts as an integer array of disjoint sets and as a graph of vertices 
 representing each cell in the maze. The disjoint sets are managed using a [weighted 
