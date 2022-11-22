@@ -7,21 +7,21 @@ You can solve the maze using either Depth-First Search (DFS) or
 Breadth-First Search (BFS). The time it takes to solve and render
 the resulting path is displayed in the bottom right.
 
-# Generation
+## Generation
 The maze starts as an integer array of disjoint sets and as a graph of vertices 
 representing each cell in the maze. The disjoint sets are managed using a weighted 
 quick-union (Union-Find) algorithm, with path compression. This allows connections 
 between large maze sections to be made in near constant time.
 
-The cells in the maze are randomly selected using a Fiser-Yates algorithm 
-(loops over all cells, in random order). Each cell selects a random neighboring
+The cells in the maze are randomly selected using a [Fiser-Yates]([url](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle))
+algorithm (loops over all cells, in random order). Each cell selects a random neighboring
 cell, and a union is made in the disjoint sets array if they are not already 
 connected. The connection/edge is also stored in the graph using an adjacency list.
 
 This process repeats until the maze has joined all cells in one spanning tree. 
 This means there is only path from the entrance to the exit. 
 
-# Solving
+## Solving
 
 Depth-First Search. There are two implementations of DFS in this program because
 it was intended that we practice writing recursive methods, however, since we run 
