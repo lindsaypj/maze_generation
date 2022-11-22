@@ -3,8 +3,8 @@ This program was developed as an assignment to practice using graphs and
 graph traversal algorithms. The maze is randomly generated using the size
 selected at the bottom.
 
-You can solve the maze using either Depth-First Search (DFS) or
-Breadth-First Search (BFS). The time it takes to solve and render
+You can solve the maze using either [Depth-First Search](https://en.wikipedia.org/wiki/Depth-first_search) (DFS) or
+[Breadth-First Search](https://en.wikipedia.org/wiki/Breadth-first_search) (BFS). The time it takes to solve and render
 the resulting path is displayed in the bottom right.
 
 ## Generation
