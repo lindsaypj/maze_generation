@@ -13,7 +13,7 @@ representing each cell in the maze. The disjoint sets are managed using a weight
 quick-union (Union-Find) algorithm, with path compression. This allows connections 
 between large maze sections to be made in near constant time.
 
-The cells in the maze are randomly selected using a [Fiser-Yates]([url](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle))
+The cells in the maze are randomly selected using a [Fiser-Yates](https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle)
 algorithm (loops over all cells, in random order). Each cell selects a random neighboring
 cell, and a union is made in the disjoint sets array if they are not already 
 connected. The connection/edge is also stored in the graph using an adjacency list.
