@@ -9,7 +9,9 @@ the resulting path is displayed in the bottom right.
 
 # Generation
 The maze starts as an integer array of disjoint sets and as a graph
-of vertices representing each cell in the maze. 
+of vertices representing each cell in the maze. The disjoint sets are
+managed using a weighted quick-union (Union-Find) algorithm. This allows
+connections between large maze sections to be made in near constant time.
 
 The cells in the maze are randomly selected using a Fiser-Yates algorithm 
 (loops over all cells, in random order). Each cell selects a random neighboring
